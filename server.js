@@ -263,7 +263,18 @@ authRouter.post('/login', async (req, res) => {
             user: { id: user.id || user._id, _id: user._id, name: user.name, email: user.email, role: user.role, phone: user.phone }
         });
     } catch (err) {
-        res.status(500).json({ message: 'Server error' });
+        const memUser = memoryStore.users.find(u => u.email === email);
+        if (memUser) {
+            const isMatch = bcrypt.compareSync(password, memUser.password);
+            if (!isMatch) return res.status(400).json({ message: 'Invalid credentials.' });
+            const token = jwt.sign({ id: memUser.id, email: memUser.email, role: memUser.role }, JWT_SECRET);
+            return res.status(200).json({
+                message: 'Login successful!',
+                token,
+                user: { id: memUser.id, _id: memUser.id, name: memUser.name, email: memUser.email, role: memUser.role, phone: memUser.phone }
+            });
+        }
+        res.status(500).json({ message: 'Server error', error: err.message });
     }
 });
 
