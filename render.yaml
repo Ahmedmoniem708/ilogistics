@@ -1,0 +1,12 @@
+﻿services:
+  - type: web
+    name: ilogistics-backend
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: MONGO_URI
+        value: "mongodb://ahmedmohamedem797979_db_user:94P8IkZIPRJf54PC@ac-ketceow-shard-00-00.vgbbkwu.mongodb.net:27017,ac-ketceow-shard-00-01.vgbbkwu.mongodb.net:27017,ac-ketceow-shard-00-02.vgbbkwu.mongodb.net:27017/i_logistics_db?ssl=true&authSource=admin&replicaSet=atlas-qe6wh5-shard-0&retryWrites=true&w=majority"
+      - key: JWT_SECRET
+        value: fc2c5f4bb88fed95374cc85a4b7caa5383418a761f070c1a6ae817c3e11fb73e
